@@ -1,0 +1,27 @@
+@use 'base/variables' as v;
+@use 'sass:color';
+
+.formulario {
+    margin-top: 5rem;
+    .campo{
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        label{
+            flex: 0 0 10rem;
+        }
+        input{
+            //-webkit-autofill;
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background-color: color.adjust(v.$gris, $lightness: 40%);
+        }
+       
+        
+    
+    }
+    
+
+}
