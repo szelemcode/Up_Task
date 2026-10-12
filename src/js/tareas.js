@@ -29,7 +29,65 @@ function mostrarFormulario(){
 setTimeout(()=>{
     const formulario = document.querySelector('.formulario');
     formulario.classList.add('animar');
-},300);
-    document.querySelector('body').appendChild(modal);
+},0);
+    modal.addEventListener('click',function(e){
+        e.preventDefault();
+
+        if(e.target.classList.contains('cerrar-modal')){
+            const formulario=document.querySelector('.formulario');
+            formulario.classList.add('cerrar');
+            setTimeout(() => {
+                modal.remove();
+            }, 500);
+            
+        }
+        if(e.target.classList.contains('submit-nueva-tarea')){
+            submitForumularioNuevaTarea();
+        }
+    })
+
+    document.querySelector('.dashboard').appendChild(modal);
 }
+
+function submitForumularioNuevaTarea(){
+    const tarea=document.querySelector('#tarea').value.trim();
+
+    if(tarea === ''){
+        //mostrar una alerta de error
+        mostrarAlerta('El nombre de la tarea es obligatorio','error',document.querySelector('.formulario legend'));
+        return;
+    }
+
+    agregarTarea(tarea);
+}
+
+
+    //Muestra un mensaje en la interfaz
+    function mostrarAlerta(mensaje, tipo, referencia){
+        //previene la creacion de multiples alertas
+        const alertaPrevia=document.querySelector('.alerta');
+            if(alertaPrevia){
+                alertaPrevia.remove();
+            }
+        
+
+
+        const alerta=document.createElement('DIV');
+        alerta.classList.add('alerta', tipo);
+        alerta.textContent=mensaje;
+        
+        //inserta la alerta antes del legend
+        referencia.parentElement.insertBefore(alerta, referencia.nextElementSibling);
+
+        //Eliminar la alerta luego de 5 segundos
+        setTimeout(() => {
+            alerta.remove();
+            
+        }, 5000);
+        
+
+    }
+    
+
+        
 })()
