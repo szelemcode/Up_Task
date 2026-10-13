@@ -88,6 +88,9 @@ function submitForumularioNuevaTarea(){
 
     }
     
+    //consultar al servidor para agregar una nueva tarea al proyecto actual
+    function agregarTarea(tare){
 
+    }
         
 })()
