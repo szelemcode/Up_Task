@@ -89,7 +89,25 @@ function submitForumularioNuevaTarea(){
     }
     
     //consultar al servidor para agregar una nueva tarea al proyecto actual
-    function agregarTarea(tare){
+    async function agregarTarea(tarea){
+        //construir la peticion
+        const datos= new FormData();
+        datos.append('nombre', 'juan');
+
+        try{
+             const url=`${location.origin}/api/tarea`;
+             const respuesta= await fetch(url,{
+                method: 'POST',
+                body: datos
+             });
+            //  console.log(url);
+            //  console.log(respuesta.status);
+             const resultado= await respuesta.json();
+             console.log(resultado);
+
+        }catch (error) {
+            console.log(error);
+        }
 
     }
         
