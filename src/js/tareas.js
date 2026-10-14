@@ -26,6 +26,7 @@ function mostrarFormulario(){
     </form>
 `;
 
+//modelo de concurrencia o loop de eventos
 setTimeout(()=>{
     const formulario = document.querySelector('.formulario');
     formulario.classList.add('animar');
