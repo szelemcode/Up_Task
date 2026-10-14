@@ -92,7 +92,9 @@ function submitForumularioNuevaTarea(){
     async function agregarTarea(tarea){
         //construir la peticion
         const datos= new FormData();
-        datos.append('nombre', 'juan');
+        datos.append('nombre', tarea);
+        datos.append('proyectoId', obtenerProyecto());
+
 
         try{
              const url=`${location.origin}/api/tarea`;
@@ -108,6 +110,18 @@ function submitForumularioNuevaTarea(){
         }catch (error) {
             console.log(error);
         }
+
+    }
+
+    //reutilizamos el codigo para obtener la id del proyecto en esta funcion
+    function obtenerProyecto(){
+        const proyectoParam = new URLSearchParams(window.location.search);
+        //Esto crea un objeto especial que permite trabajar con los parámetros de la URL.
+
+        const proyecto = Object.fromEntries(proyectoParam.entries());
+        //Acá estamos convirtiendo los parámetros de la URL en un objeto JavaScript.
+
+        return proyecto.id;//devuelve la id del proyecto
 
     }
         
