@@ -106,7 +106,18 @@ function submitForumularioNuevaTarea(){
             //  console.log(url);
             //  console.log(respuesta.status);
              const resultado= await respuesta.json();
-             console.log(resultado);
+             console.log(resultado); //imprime lo que se manda desde php a la consola para probar
+            
+             //si se intenta agregar una tarea a un proyecto que no existe muestra esta alerta
+             // o si la alerta es de exito tambien , entonces se aprovecha el codigo
+             mostrarAlerta(resultado.mensaje, resultado.tipo, document.querySelector('.formulario legend'));
+
+             if(resultado.tipo === 'exito'){
+                const modal = document.querySelector('.modal');
+                setTimeout(() => {
+                    modal.remove();
+                },3000);
+             }
 
         }catch (error) {
             console.log(error);

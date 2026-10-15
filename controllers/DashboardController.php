@@ -41,7 +41,7 @@ class DashboardController{
              $proyecto->guardar();
 
              //redireccionar
-             header('Location:/pryecto?id=' . $proyecto->url);
+             header('Location:/proyecto?id=' . $proyecto->url);
 
             
             
