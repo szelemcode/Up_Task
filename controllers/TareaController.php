@@ -53,7 +53,8 @@ class TareaController{
         $respuesta = [
             'tipo' => 'exito',
             'id' => $resultado['id'],
-            'mensaje' => 'Tarea Creada Correctamente'
+            'mensaje' => 'Tarea Creada Correctamente',
+            'proyectoId' => $proyecto->id //manda el proyectoId al tarea.js 
         ];
         echo json_encode($respuesta);
         }

@@ -1,6 +1,7 @@
 (function(){
     obtenerTareas();
-
+    let tareas =[];
+    
     //BOTON PARA MOSTRAR EL MODAL DE AGREGAR TAREA
     const nuevaTareaBtn=document.querySelector('#agregar-tarea');
     nuevaTareaBtn.addEventListener('click',mostrarFormulario);
@@ -12,8 +13,9 @@
             const respuesta = await fetch(url);
             const resultado = await respuesta.json();
 
-            const {tareas} = resultado; //destructuring
-            mostrarTareas(tareas);
+            //const {tareas} = resultado; //destructuring
+            tareas=resultado.tareas;//asignamos resultado.tareas a la variable global tareas
+            mostrarTareas();
            // console.log(url);
 
         } catch (error){
@@ -21,7 +23,8 @@
         }
     }
 
-function mostrarTareas(tareas){
+function mostrarTareas(){
+    limpiarTareas();
     if(tareas.length === 0){
         const contenedorTareas = document.querySelector('#listado-tareas');
 
@@ -71,9 +74,6 @@ function mostrarTareas(tareas){
 
         const listadoTareas = document.querySelector('#listado-tareas');
         listadoTareas.appendChild(contenedorTarea);
-
-
-        console.log(opcionesDiv);
 
     });
     
@@ -183,7 +183,7 @@ function submitForumularioNuevaTarea(){
             //  console.log(url);
             //  console.log(respuesta.status);
              const resultado= await respuesta.json();
-             console.log(resultado); //imprime lo que se manda desde php a la consola para probar
+             //console.log(resultado); //imprime lo que se manda desde php a la consola para probar
             
              //si se intenta agregar una tarea a un proyecto que no existe muestra esta alerta
              // o si la alerta es de exito tambien , entonces se aprovecha el codigo
@@ -193,7 +193,19 @@ function submitForumularioNuevaTarea(){
                 const modal = document.querySelector('.modal');
                 setTimeout(() => {
                     modal.remove();
+                    //window.location.reload();//recarga la pagina
                 },3000);
+
+                //agregar el objeto de  tarea  al gloal de tareas
+                const tareaObj= {
+                    id: String(resultado.id),//se obtiene del fetch que se mando de php
+                    nombre: tarea, //se obtiene del input en la funcion mostrarFormulario
+                    estado: "0", // es siempre 0 porque es una tarea nueva
+                    proyectoId: resultado.proyectoId //se obtiene del fetch que se mando de php
+                }
+                    tareas = [...tareas,tareaObj];
+                    mostrarTareas();
+                
              }
 
         }catch (error) {
@@ -212,6 +224,14 @@ function submitForumularioNuevaTarea(){
 
         return proyecto.id;//devuelve la id del proyecto
 
+    }
+
+    function limpiarTareas(){
+        const listadoTareas = document.querySelector('#listado-tareas');
+        //listadoTareas.innerHTML='';//esto funciona pero es mas lento
+        while(listadoTareas.firstChild){
+            listadoTareas.removeChild(listadoTareas.firstChild);
+        }
     }
         
 })()
