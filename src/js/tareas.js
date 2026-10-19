@@ -60,6 +60,9 @@ function mostrarTareas(){
         btnEstadoTarea.classList.add(`${estados[tarea.estado].toLowerCase()}`)
         btnEstadoTarea.textContent= estados[tarea.estado];//hacemos uso del ojeto 
         btnEstadoTarea.dataset.estadoTarea=tarea.estado;
+        btnEstadoTarea.ondblclick=function(){
+            cambiarEstadoTarea({...tarea});
+        }
 
         const btnEliminarTarea = document.createElement('BUTTON');
         btnEliminarTarea.classList.add('eliminar-tarea');
@@ -211,6 +214,53 @@ function submitForumularioNuevaTarea(){
         }catch (error) {
             console.log(error);
         }
+
+    }
+
+    function cambiarEstadoTarea(tarea){
+
+            const nuevoEstado=tarea.estado === "1" ? "0" : "1" ;// se pasan como strings porque llegan como string desde php
+            tarea.estado = nuevoEstado;
+            actualizarTarea(tarea);
+    }
+
+    async function actualizarTarea(tarea){
+        const {estado, id, nombre, proyectoId} = tarea;
+        const datos = new FormData;
+        datos.append('id', id);
+        datos.append('nombre', nombre);
+        datos.append('estado', estado);
+        datos.append('proyectoId', obtenerProyecto());//paso la url no el id 
+
+        //para recorrer los valores del form data
+        // for (let valor of datos.values()){
+        //     console.log(valor);
+        // }
+
+        //otra forma para recorrer el form data con la clave y el valor
+        // for (let [clave,valor] of datos.entries()){
+        //     console.log(clave,valor);
+        // }
+
+        try{
+            const url = `${location.origin}/api/actualizar`;
+            const respuesta = await fetch(url,{ //objeto de configuracion
+                method: 'POST',
+                body: datos
+            });
+            
+            const resultado = await respuesta.json();
+
+            if(resultado.respuesta.tipo === 'exito'){
+               mostrarAlerta(resultado.respuesta.mensaje,
+                resultado.respuesta.tipo, document.querySelector('.contenedor-nueva-tarea'));
+            }
+           
+        }catch(error){
+
+        }
+        
+
 
     }
 
