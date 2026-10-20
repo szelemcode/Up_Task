@@ -255,7 +255,14 @@ function submitForumularioNuevaTarea(){
                mostrarAlerta(resultado.respuesta.mensaje,
                 resultado.respuesta.tipo, document.querySelector('.contenedor-nueva-tarea'));
             }
-           
+            tareas = tareas.map(tareaMemoria => {
+                if(tareaMemoria.id === id){
+                    tareaMemoria.estado = estado;
+                } 
+                return tareaMemoria;
+            });
+            mostrarTareas();//refresca el html 
+            console.log(tareas);
         }catch(error){
 
         }
