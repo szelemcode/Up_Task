@@ -113,9 +113,18 @@ class TareaController{
                 echo json_encode($respuesta);
                 return;
             }
-            echo json_encode([
-                'respuesta' => 'correcto'
-            ]);
+
+            $tarea = new Tarea($_POST);
+            $resultado = $tarea->eliminar();
+            
+
+            $resultado = [
+                'resultado' => $resultado,
+                'mensaje' => 'Eliminado Correctamente',
+                'tipo' => 'exito'
+            ];
+
+            echo json_encode($resultado);
 
     }
  

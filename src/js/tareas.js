@@ -4,7 +4,9 @@
     
     //BOTON PARA MOSTRAR EL MODAL DE AGREGAR TAREA
     const nuevaTareaBtn=document.querySelector('#agregar-tarea');
-    nuevaTareaBtn.addEventListener('click',mostrarFormulario);
+    nuevaTareaBtn.addEventListener('click',function(){
+        mostrarFormulario();
+    });
 
     async function obtenerTareas(){
         try {
@@ -50,6 +52,10 @@ function mostrarTareas(){
         
         const nombreTarea = document.createElement('P');
         nombreTarea.textContent= tarea.nombre;
+        //para editar el nombre luego que se agrego la tarea
+        nombreTarea.ondblclick = function () {
+            mostrarFormulario(editar=true, tarea);
+        }
 
         const opcionesDiv = document.createElement('DIV');
         opcionesDiv.classList.add('opciones');
@@ -87,23 +93,28 @@ function mostrarTareas(){
 }    
 
 
-function mostrarFormulario(){
+function mostrarFormulario(editar = false, tarea = {} ){
+    console.log(tarea);
     const modal= document.createElement('DIV');
     modal.classList.add('modal');
     modal.innerHTML=`
     <form class="formulario nueva-tarea">
-         <legend>Añade una nueva tarea</legend>
+         <legend>${editar ? 'Editar Tarea' : 'Añade una nueva tarea'}</legend>
          <div class="campo">
          <label>Tarea</label>
          <input
             type="text"
             name="tarea"
-            placeholder="Agregar tarea al proyecto actual"
+            placeholder="${tarea.nombre ? 'Edita la tarea': 'Agregar tarea al proyecto actual'}"
             id="tarea"
-         />
+            value = "${tarea.nombre ? tarea.nombre : ''}"
+         />$
          </div>
          <div class="opciones">
-            <input type="submit" class="submit-nueva-tarea" value="Añadir Tarea"></input>
+            <input 
+                type="submit" 
+                class="submit-nueva-tarea" 
+                value="${editar ? 'Guardar Camios' :'Añadir Tarea'}"></input>
             <button type="button" class="cerrar-modal">Cancelar</button>
          </div>         
     </form>
@@ -310,8 +321,22 @@ function submitForumularioNuevaTarea(){
             //console.log(respuesta);
             const resultado = await respuesta.json();
             console.log(resultado);
-            if(resultado){
+            if(resultado.resultado){
+                //nuestra alerta
+                // mostrarAlerta(
+                //     resultado.mensaje,
+                //     resultado.tipo,
+                //     document.querySelector('.contenedor-nueva-tarea'))
 
+                Swal.fire('Eliminado!', resultado.mensaje ,'success'  )
+                    
+                    //con estas lineas lo eliminamos de la memoria , de nuestro virtual dom y 
+                    //regeneramos nuestro codigo html
+                    tareas = tareas.filter(tareaMemoria => tareaMemoria.id !== tarea.id);
+                    setTimeout(() => {
+                        mostrarTareas();
+                    }, 1000);
+                    
             }
 
         } catch (error) {
