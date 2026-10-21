@@ -68,6 +68,9 @@ function mostrarTareas(){
         btnEliminarTarea.classList.add('eliminar-tarea');
         btnEliminarTarea.dataset.idTarea = tarea.id;
         btnEliminarTarea.textContent = 'Eliminar Tarea';
+        btnEliminarTarea.ondblclick = function(){
+            confirmarEliminarTarea({...tarea})
+        }
         
         opcionesDiv.appendChild(btnEstadoTarea);
         opcionesDiv.appendChild(btnEliminarTarea);
@@ -269,6 +272,51 @@ function submitForumularioNuevaTarea(){
         
 
 
+    }
+
+    function confirmarEliminarTarea(tarea){
+    // const resultado = confirm('Eliminar');
+    // console.log(resultado);
+    Swal.fire({
+      title: "Eliminar Tarea?",
+      //showDenyButton: true,//ocultamos el boton del medio
+      showCancelButton: true,
+      confirmButtonText: "Si",
+      //denyButtonText: `Don't save`
+      cancelButtonText: "No"
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        //console.log('..Eliminando');
+        eliminarTarea(tarea);
+          }
+        });
+    }
+
+    async function eliminarTarea(tarea){
+        const {id,nombre,estado} = tarea;
+        const datos = new FormData();
+        datos.append('id', id);
+        datos.append('nombre', nombre);
+        datos.append('estado', estado);
+        datos.append('proyectoId' , obtenerProyecto());
+        
+        try{
+            const url = `${location.origin}/api/tareas/eliminar`;
+            const respuesta = await fetch(url,{
+                method: 'POST',
+                body: datos
+            });
+            //console.log(respuesta);
+            const resultado = await respuesta.json();
+            console.log(resultado);
+            if(resultado){
+
+            }
+
+        } catch (error) {
+
+        }
     }
 
     //reutilizamos el codigo para obtener la id del proyecto en esta funcion

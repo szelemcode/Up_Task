@@ -99,11 +99,27 @@ class TareaController{
  
     public static function eliminar () {
          if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            
-        }
+             //validar que el proyecto exista
+            $proyecto = Proyecto::where('url', $_POST['proyectoId']);
+            //este proyectoId tiene la url no es el proyectoId
+
+            session_start();
+            //validacion , mismo codigo de actualizar
+            if(!$proyecto || $proyecto->propietarioId !== $_SESSION['id']){
+                $respuesta =[
+                    'tipo' => 'error',
+                    'mensaje' => 'Hubo un Error al Actualizar la tarea',
+                ];
+                echo json_encode($respuesta);
+                return;
+            }
+            echo json_encode([
+                'respuesta' => 'correcto'
+            ]);
 
     }
  
+    }
 }
 
 ?>

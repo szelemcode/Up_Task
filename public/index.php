@@ -40,7 +40,7 @@ $router->get('/perfil',[DashboardController::class,'perfil']);
 $router->get('/api/tareas',[TareaController::class,'index']);
 $router->post('/api/tarea',[TareaController::class,'crear']);
 $router->post('/api/actualizar',[TareaController::class,'actualizar']);
-$router->post('/api/eliminar',[TareaController::class,'eliminar']);
+$router->post('/api/tareas/eliminar',[TareaController::class,'eliminar']);
 
 
 
