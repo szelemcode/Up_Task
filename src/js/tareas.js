@@ -54,7 +54,7 @@ function mostrarTareas(){
         nombreTarea.textContent= tarea.nombre;
         //para editar el nombre luego que se agrego la tarea
         nombreTarea.ondblclick = function () {
-            mostrarFormulario(editar=true, tarea);
+            mostrarFormulario(editar=true, {...tarea});// pasamos una copia del objeto y no el original
         }
 
         const opcionesDiv = document.createElement('DIV');
@@ -75,7 +75,7 @@ function mostrarTareas(){
         btnEliminarTarea.dataset.idTarea = tarea.id;
         btnEliminarTarea.textContent = 'Eliminar Tarea';
         btnEliminarTarea.ondblclick = function(){
-            confirmarEliminarTarea({...tarea})
+            confirmarEliminarTarea({...tarea});
         }
         
         opcionesDiv.appendChild(btnEstadoTarea);
@@ -127,7 +127,7 @@ setTimeout(()=>{
 },0);
     modal.addEventListener('click',function(e){
         e.preventDefault();
-
+        //delegation the dom
         if(e.target.classList.contains('cerrar-modal')){
             const formulario=document.querySelector('.formulario');
             formulario.classList.add('cerrar');
@@ -137,23 +137,28 @@ setTimeout(()=>{
             
         }
         if(e.target.classList.contains('submit-nueva-tarea')){
-            submitForumularioNuevaTarea();
+            //la validacion de abajo se pego desde la funcion submitformularionuevatarea
+            const nombreTarea=document.querySelector('#tarea').value.trim();
+
+            if(nombreTarea === ''){
+                //mostrar una alerta de error
+                mostrarAlerta('El nombre de la tarea es obligatorio','error',document.querySelector('.formulario legend'));
+                return;
+            }
+
+            // *** CREANDO O ACTUALIZANDO TAREA ***
+            if(editar) {
+                //aca tenemos que reescribir la tarea sino mandaremos el objeto actual
+                tarea.nombre = nombreTarea; //reescribimos el objeto pero cuando se llamo la funcion 
+                // se paso una copia del ojbejto
+                actualizarTarea(tarea);
+            } else {
+                agregarTarea(nombreTarea);
+            }
         }
-    })
+    });
 
     document.querySelector('.dashboard').appendChild(modal);
-}
-
-function submitForumularioNuevaTarea(){
-    const tarea=document.querySelector('#tarea').value.trim();
-
-    if(tarea === ''){
-        //mostrar una alerta de error
-        mostrarAlerta('El nombre de la tarea es obligatorio','error',document.querySelector('.formulario legend'));
-        return;
-    }
-
-    agregarTarea(tarea);
 }
 
 
@@ -239,6 +244,7 @@ function submitForumularioNuevaTarea(){
     }
 
     async function actualizarTarea(tarea){
+        
         const {estado, id, nombre, proyectoId} = tarea;
         const datos = new FormData;
         datos.append('id', id);
@@ -266,12 +272,33 @@ function submitForumularioNuevaTarea(){
             const resultado = await respuesta.json();
 
             if(resultado.respuesta.tipo === 'exito'){
-               mostrarAlerta(resultado.respuesta.mensaje,
-                resultado.respuesta.tipo, document.querySelector('.contenedor-nueva-tarea'));
+                //alerta nuestra
+            //    mostrarAlerta(
+            //     resultado.respuesta.mensaje,
+            //     resultado.respuesta.tipo, 
+            //     document.querySelector('.contenedor-nueva-tarea'));
+
+            Swal.fire(
+                resultado.respuesta.mensaje,
+                resultado.respuesta.mensaje,
+                'success'
+
+            );
+
+            //importante buena practica
+            const modal = document.querySelector('.modal');
+            if(modal){
+                modal.remove();
             }
+            
+            }
+
             tareas = tareas.map(tareaMemoria => {
+                //verificamos que tarea estamos cambiando
+                //actualizamos el virtual dom
                 if(tareaMemoria.id === id){
                     tareaMemoria.estado = estado;
+                    tareaMemoria.nombre = nombre;
                 } 
                 return tareaMemoria;
             });
