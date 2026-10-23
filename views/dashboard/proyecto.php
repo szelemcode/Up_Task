@@ -26,7 +26,7 @@
                 <label for="completadas">Completadas</label>
                 <input 
                     type="radio"
-                    id="todas"
+                    id="completadas"
                     name="filtro"
                     value="1"
                     >
