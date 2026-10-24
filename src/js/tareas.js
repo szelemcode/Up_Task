@@ -1,12 +1,36 @@
 (function(){
     obtenerTareas();
     let tareas =[];
+    let filtradas = [];
     
     //BOTON PARA MOSTRAR EL MODAL DE AGREGAR TAREA
     const nuevaTareaBtn=document.querySelector('#agregar-tarea');
     nuevaTareaBtn.addEventListener('click',function(){
         mostrarFormulario();
     });
+
+
+    //FILTROS DE BUSQUEDA
+    const filtros = document.querySelectorAll('#filtros input[type="radio"]');
+    filtros.forEach(radio => {
+        radio.addEventListener('input',filtrarTareas);
+
+    })
+    console.log(filtros);
+
+    function filtrarTareas(e) {
+       const filtro = e.target.value;
+       if(filtro !== ''){
+        //filtramos las que sean iguales a el filtro
+        filtradas = tareas.filter(tarea => tarea.estado === filtro);
+        console.log('tenemos que filtrar');
+       } else {
+        filtradas = [];
+       }
+
+       mostrarTareas();
+       console.log(filtradas);
+    }
 
     async function obtenerTareas(){
         try {
@@ -27,7 +51,10 @@
 
 function mostrarTareas(){
     limpiarTareas();
-    if(tareas.length === 0){
+
+    //si filtradas tieje algo le asigna filtradas y sino le asigna tareas
+    const arrayTareas = filtradas.length ? filtradas : tareas;
+    if(arrayTareas.length === 0){
         const contenedorTareas = document.querySelector('#listado-tareas');
 
         const textoNoTareas = document.createElement('LI');// no puede ser un div porque contenedor tareas es un ul
@@ -45,7 +72,7 @@ function mostrarTareas(){
         1: 'Completa'
     }
 
-    tareas.forEach(tarea =>{//recorro el arreglo de objetos
+    arrayTareas.forEach(tarea =>{//recorro el arreglo de objetos
         const contenedorTarea = document.createElement('LI');
         contenedorTarea.dataset.tareaId=tarea.id;//el id se saca del objeto tarea
         contenedorTarea.classList.add('tarea');
