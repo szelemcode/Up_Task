@@ -16,20 +16,20 @@
         radio.addEventListener('input',filtrarTareas);
 
     })
-    console.log(filtros);
+    //console.log(filtros);
 
     function filtrarTareas(e) {
        const filtro = e.target.value;
        if(filtro !== ''){
         //filtramos las que sean iguales a el filtro
         filtradas = tareas.filter(tarea => tarea.estado === filtro);
-        console.log('tenemos que filtrar');
+       // console.log('tenemos que filtrar');
        } else {
         filtradas = [];
        }
 
        mostrarTareas();
-       console.log(filtradas);
+       //console.log(filtradas);
     }
 
     async function obtenerTareas(){
@@ -51,6 +51,9 @@
 
 function mostrarTareas(){
     limpiarTareas();
+    //calcular cuantas tenemos pendientes y cuantas completas
+    totalPendientes();
+    totalCompletas();
 
     //si filtradas tieje algo le asigna filtradas y sino le asigna tareas
     const arrayTareas = filtradas.length ? filtradas : tareas;
@@ -117,11 +120,33 @@ function mostrarTareas(){
     });
     
 
-}    
+} 
+
+ function totalPendientes(){
+     const totalPendientes = tareas.filter(tarea => tarea.estado === "0" );
+     const pendientesRadio = document.querySelector('#pendientes');
+     
+     if(totalPendientes.length === 0){
+        pendientesRadio.disabled = true;
+     } else {
+        pendientesRadio.disabled = false;
+     }
+     
+}
+
+function totalCompletas() {
+    const totalCompletas = tareas.filter(tarea => tarea.estado === "1");
+    const completasRadio = document.querySelector('#completadas');
+    if(totalCompletas.length === 0) {
+        completasRadio.disabled = true;
+    } else {
+        completasRadio.disabled = false;
+    }
+}
 
 
 function mostrarFormulario(editar = false, tarea = {} ){
-    console.log(tarea);
+    //console.log(tarea);
     const modal= document.createElement('DIV');
     modal.classList.add('modal');
     modal.innerHTML=`
@@ -330,7 +355,7 @@ setTimeout(()=>{
                 return tareaMemoria;
             });
             mostrarTareas();//refresca el html 
-            console.log(tareas);
+           // console.log(tareas);
         }catch(error){
 
         }
@@ -374,7 +399,7 @@ setTimeout(()=>{
             });
             //console.log(respuesta);
             const resultado = await respuesta.json();
-            console.log(resultado);
+           // console.log(resultado);
             if(resultado.resultado){
                 //nuestra alerta
                 // mostrarAlerta(

@@ -3,6 +3,11 @@
 @use 'sass:color';
 
 .sidebar {
+    display: none;//para que no se muestre en un dispositivo mobil
+
+    @include m.tablet {
+        display: block; //para que se muetre si no es un dispositivo mobil
+    }
     background-color: v.$indigo;
     padding: 2rem;
     h2 {

@@ -1,0 +1,1 @@
+const mobilMenuBtn=document.querySelector("#mobil-menu"),sidebar=document.querySelector(".sidebar");mobilMenuBtn&&mobilMenuBtn.addEventListener("click",function(){sidebar.classList.add("mostrar")});
