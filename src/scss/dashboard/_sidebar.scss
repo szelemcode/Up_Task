@@ -28,6 +28,12 @@
             display: none;
          }
     }
+     
+     &.ocultar {
+        opacity: 0;
+    }
+
+   
 
     @include m.tablet {
         //display: block; //para que se muetre si no es un dispositivo mobil
@@ -36,24 +42,48 @@
         padding: 2rem;
     }
    
-
-    h2 {
+    .contenedor-sidebar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h2 {
        color: v.$blanco;
        margin: 0;
        text-align: center;
+        }
+        .cerrar-menu {
+            display: flex;
+            justify-content: center;
+            height: 2rem;
+            width: 2rem;
+            img {
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            @include m.tablet {
+                display: none;
+            }
+
+        }
+
     }
+
+    
     .sidebar-nav{
         margin-top: 5rem; 
         a {
             color: v.$blanco;
             display: block;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.4rem;
             padding: .7rem;
             border-radius: .5rem;
             transition-property: background-color;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 2.4rem;
+            text-align: center;
+           
            
 
             &:hover,
@@ -61,10 +91,23 @@
                 background-color: color.adjust(v.$indigo ,$lightness: -20%);
                 border-radius: .5rem;                
             }
-           
-           
 
-        
+            @include m.tablet {
+                 font-size: 1.2rem;
+                 margin-bottom: 1.5rem;
+                 text-align: left;
+
+            }        
     }
 }
+
+        .cerrar-sesion-mobile {
+            margin-top: 10rem;
+            .cerrar-sesion {
+                @include m.boton (v.$indigo, v.$blanco);
+            }
+            @include m.tablet {
+                display: none; // para que no se muestre pantallas myores a un mobil
+            }
+        }
 }
