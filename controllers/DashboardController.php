@@ -93,11 +93,19 @@ class DashboardController{
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validar_perfil();
             if(empty($alertas)) {
-              $resultado=$usuario->guardar();
-              debuguear($resultado);
-              Usuario::setAlerta('exito','Guardado Correctamente');
-              //asignar el nombre nuevo a la barra
-              $_SESSION['nombre'] = $usuario->nombre;
+                $existeUsuario = Usuario::where('email',$usuario->email);
+                if($existeUsuario && $existeUsuario->id !== $usuario->id){
+                    //mensaje de error
+                    Usuario::setAlerta('error','Email no valido');
+                }else {
+                    //guardar Registro
+                    $usuario->guardar();
+                   // debuguear($resultado);
+                    Usuario::setAlerta('exito','Guardado Correctamente');
+                    //asignar el nombre nuevo a la barra
+                    $_SESSION['nombre'] = $usuario->nombre;
+                }
+              
             }
            
         }

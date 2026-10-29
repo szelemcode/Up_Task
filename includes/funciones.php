@@ -2,6 +2,10 @@
 
 function debuguear($variable) : string {
     echo "<pre>";
+    echo "<pre>";
+    echo "<pre>";
+    var_dump($variable);
+    var_dump($variable);
     var_dump($variable);
     echo "</pre>";
     exit;
