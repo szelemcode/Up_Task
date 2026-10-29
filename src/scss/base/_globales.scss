@@ -1,4 +1,5 @@
 @use 'variables' as v;
+@use 'mixins' as m;
 
 *, *:before, *:after {
     box-sizing: inherit;
@@ -20,7 +21,11 @@ body {
 }
 .contenedor-sm {
     max-width: 70rem;
-    margin: 0 auto;
+    margin: 1rem;
+    gap: 2rem;
+    @include m.tablet{
+        margin: 0 auto;
+    }
 }
 a {
     text-decoration: none;
