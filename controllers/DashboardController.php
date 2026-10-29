@@ -117,5 +117,53 @@ class DashboardController{
     ]);
 
     }
+
+    public static function cambiar_password(Router $router) {
+    session_start();
+    isAuth();
+    $alertas= [];
+    
+    
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        //$usuario = Usuario::where('email',$_SESSION['email']);
+        $usuario = Usuario::find($_SESSION['id']);
+        $usuario->sincronizar($_POST);
+
+        $alertas = $usuario->nuevo_password();
+        
+        //if(password_verify($password,$usuario->password));
+        if(empty($alertas)){
+            $resultado = $usuario->comprobar_password();
+
+            if($resultado){
+                $usuario->password = $usuario->password_nuevo;
+                $usuario->hashPassword();
+                //Eliminar propiedades no necesarias
+                unset($usuario->password_actual);
+                unset($usuario->password_nuevo);
+                
+                //Actualizar
+                $resultado = $usuario->guardar();
+                if($resultado) {
+                    Usuario::setAlerta('exito','Password Guardado Correctamente');
+                     $alertas = Usuario::getAlertas();
+                }
+            }else {
+                Usuario::setAlerta('error','Password Incorrecto');
+                $alertas = Usuario::getAlertas();
+            }
+           
+        }
+        
+    }
+
+
+    $router->render('dashboard/cambiar-password',[
+        'titulo' => 'Cambiar Password',
+        'alertas' => $alertas
+    ]);
+    }
 }
+
+
 ?>

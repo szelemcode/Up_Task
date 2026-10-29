@@ -63,9 +63,11 @@ class ActiveRecord {
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
+        //echo "Entré al método WHERE<br>";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}' limit 1";
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
+           
     }
 
     //busca todos los registros que pertenecen a un valor 
