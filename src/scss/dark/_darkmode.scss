@@ -23,6 +23,9 @@
 
       .formulario .campo input {
         background-color: color.adjust($grisOscuro,$lightness: 15%);
+        &::placeholder {
+            color: color.adjust(v.$grisClaro, $lightness: -30%);
+        }
      }
 
      .alerta.error {
@@ -47,9 +50,29 @@
      
      
 
-     .barra-mobile {
+     .barra-mobile,
+     .barra {
         background-color: color.adjust($grisOscuro,$lightness: -7%);
+       
      }
+
+    .barra {
+          a.cerrar-session {
+        //background-color: v.$naranja;
+         @include m.boton (v.$naranja,v.$blanco);
+         padding: 1rem;
+         font-size: 1.2rem;
+        }
+        p {
+        color: v.$naranja;
+        span{
+            color: v.$grisClaro;
+            }
+        }
+    }
+    
+    
+    
 
      .filtros {
         background-color: color.adjust($grisOscuro, $lightness: 10%);
@@ -72,6 +95,13 @@
                 color: color.adjust(v.$grisClaro,$lightness: -20%);
             }
         }
+        .formulario input:not([type="submit"]) {
+            background-color: color.adjust($grisOscuro, $lightness: 30%);
+            color: v.$blanco;
+            &::placeholder {
+                color:color.adjust(v.$grisClaro, $lightness: -30%) ;
+            }
+        }
      }
 
      .listado-proyectos .proyecto {
@@ -85,6 +115,21 @@
         border: none;
         background-color: color.adjust($grisOscuro, $lightness: 10%);
         p {
+            color: v.$grisClaro;
+        }
+     }
+
+     .formulario.nueva-tarea{
+        background-color: color.adjust($grisOscuro,$lightness: 10%);
+        .campo input {
+            background-color: color.adjust($grisOscuro,$lightness: 20%);
+            border: none;
+            color: v.$blanco;
+            &::placeholder{
+                color: color.adjust(v.$grisClaro, $lightness: -20%);
+            }
+        }
+        legend {
             color: v.$grisClaro;
         }
      }

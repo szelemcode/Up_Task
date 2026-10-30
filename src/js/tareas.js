@@ -160,7 +160,7 @@ function mostrarFormulario(editar = false, tarea = {} ){
             placeholder="${tarea.nombre ? 'Edita la tarea': 'Agregar tarea al proyecto actual'}"
             id="tarea"
             value = "${tarea.nombre ? tarea.nombre : ''}"
-         />$
+         />
          </div>
          <div class="opciones">
             <input 
